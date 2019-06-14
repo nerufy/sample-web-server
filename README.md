@@ -222,3 +222,46 @@ Listening on port 3000
 (base) MacBook-Pro:mywebapi kouki$ 
 
 ```
+自分が重要だと思った部分の追記
+```
+(base) MacBook-Pro:mywebapi kouki$ curl --silent --request GET --url http://localhost:3000
+<!DOCTYPE html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <title>TODOリスト</title>
+    <style>
+        html {
+            background-color: rgb(240,240,240);
+        }
+    </style>
+</head>
+<body>
+    <h1>TODO List</h1>
+    <div>
+        <ul id="todo-container"></ul>
+    </div>
+    <script>
+        fetch('./api/v1/list')
+            .then((response) => response.json())
+            .then((todoList) => {
+                const todoContainer = document.querySelector('#todo-container')
+                todoContainer.innerHTML = '';
+                for(const item of todoList){
+                    const li = document.createElement('li');
+                    const label = document.createElement('label');
+                    const checkbox = document.createElement('input');
+                    checkbox.type = 'checkbox';
+                    checkbox.checked = item.done;
+                    const text = new Text(item.title);
+                    label.appendChild(checkbox);
+                    label.appendChild(text);
+                    li.appendChild(label);
+                    todoContainer.appendChild(li);
+                }
+            })
+
+    </script>
+</body>(base) MacBook-Pro:mywebapi kouki$ curl --silent --request GET --url httplhost:3000/api/v1/list
+[{"title":"Javascriptを勉強する","done":true},{"title":"Node.jsを勉強する","done":false},{"title":"Web APIを作る","done":false}](base) MacBook-Pro:mywebapi kouki$ 
+
+```
